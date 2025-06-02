@@ -52,9 +52,9 @@ class UserController extends Controller
         }
 
         $arrayValidatedData = $request->validate([
-            'name' => 'string|required|max:255',
-            'email' => 'string|required|email|unique:users,email',
-            'password' => 'string|required|min:6'
+            'name' => 'string|required',
+            'email' => 'string|required',
+            'password' => 'string|required',
         ]);
         
         $user->update($arrayValidatedData);
