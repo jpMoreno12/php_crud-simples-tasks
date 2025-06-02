@@ -19,11 +19,17 @@ Route::middleware('auth:api')->group(function () {
 });
 
 
+Route::middleware('auth:api')->group(function () {
+    Route::post('/users', [UserController::class, 'updateUser']);  
+    Route::put('/users/{id}', [UserController::class, 'deleteUser']); 
+});
+
+Route::post('/login', [UserController::class, 'login']);
 Route::get('/getAllUsers', [UserController::class, 'getAllUsers']);      
 Route::get('/getUser{id}', [UserController::class, 'getUser']);     
 Route::post('/createUser', [UserController::class, 'createUser']);     
-Route::put('/updateUser', [UserController::class, 'updateUser']);  
-Route::delete('/deleteUser', [UserController::class, 'deleteUser']); 
+// Route::put('/updateUser', [UserController::class, 'updateUser']);  
+// Route::delete('/deleteUser', [UserController::class, 'deleteUser']); 
 
 // Route::get('/getAllTasks', [TaskController::class, 'index']);        
 // Route::post('/createTask', [TaskController::class, 'store']);       
