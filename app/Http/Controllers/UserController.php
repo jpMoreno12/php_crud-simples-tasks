@@ -11,6 +11,10 @@ use function Pest\Laravel\json;
 
 class UserController extends Controller
 {
+
+    public function teste() {
+        return 'stesds';
+    }
     public function createUser(Request $request)  {
         $arrayValidatedData = $request->validate([
             'name' => 'string|required|max:255',
