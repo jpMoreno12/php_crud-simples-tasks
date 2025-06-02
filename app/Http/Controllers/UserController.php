@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use function Pest\Laravel\json;
 
 class UserController extends Controller
@@ -79,4 +80,5 @@ class UserController extends Controller
             'user' => $user,
         ]);
     }
+
 }

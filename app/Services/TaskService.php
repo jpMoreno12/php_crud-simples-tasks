@@ -27,17 +27,22 @@ class TaskService
         return $task;
     }
 
-    public function updateTask(int $id, array $data, int $authUserId)
-    {
-        $task = $this->taskRepository->getTask($id);
+ public function updateTask(int $id, array $data, int $authUserId)
+{
+    $task = $this->taskRepository->getTask($id);
 
-        if ($task->user_id !== $authUserId) {
-            throw new \Exception('user not found');
-        }
-
-        $updatedTask = $this->taskRepository->updateTask($id, $data);
-        return $updatedTask;
+    if (!$task) {
+        throw new \Exception('Task não encontrada');
     }
+
+    if ($task->user_id !== $authUserId) {
+        throw new \Exception('Usuário não autorizado');
+    }
+
+    $updatedTask = $this->taskRepository->updateTask($id, $data);
+    return $updatedTask;
+}
+ 
 
     public function deleteTask(int $id, int $authUserId)
     {
