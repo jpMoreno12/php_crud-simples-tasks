@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Repositories\Contracts\ITask;
 use Illuminate\Http\Request;
 use App\Services\TaskService;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -15,9 +16,10 @@ class TaskController extends Controller
         $this->taskService = $taskService;
     }
 
-    public function index(int $authUserId)
+    public function index(Request $request)
     {
-        $tasks = $this->taskService->getAllTasks( $authUserId);
+        $user = $request->user();
+        $tasks = $this->taskService->getAllTasks($user->id);
 
         return response()->json($tasks);
     }
@@ -25,16 +27,20 @@ class TaskController extends Controller
 
     public function store(Request $request)
     {
+
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json(['error' => 'Usuário não autenticado'], 401);
+        }
+
         $validatedData = $request->validate([
             'title' => 'required|string',
             'description' => 'nullable|string',
             'status' => 'in:pending,in_progress,done',
         ]);
-        
 
-        $authUserId = 1;
-
-        $task = $this->taskService->createTask($validatedData, $authUserId);
+        $task = $this->taskService->createTask($validatedData,$user->id);
 
         return response()->json([
             'message' => 'Task was created',
@@ -44,17 +50,23 @@ class TaskController extends Controller
 
     public function update(Request $request, int $id)
     {
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json(['error' => 'Usuário não autenticado'], 401);
+        }
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'status' => 'in:pending,in_progress,done',
         ]);
 
-        $authUserId = 1;
-
-        $task = $this->taskService->updateTask($id, $validatedData, $authUserId);
-
-        return response()->json($task);
+        try {
+            $task = $this->taskService->updateTask($id, $validatedData, $user->id);
+            return response()->json($task);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     public function destroy(int $id)
