@@ -32,7 +32,7 @@ class TaskController extends Controller
         ]);
         
 
-        $authUserId = 3;
+        $authUserId = 1;
 
         $task = $this->taskService->createTask($validatedData, $authUserId);
 
