@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\app\Http\Requests\TaskRequests\UpdateTaskRequest;
+use App\Http\Requests\TaskRequests\StoreTaskRequest;
 use App\Repositories\Contracts\ITask;
 use Illuminate\Http\Request;
 use App\Services\TaskService;
@@ -25,7 +27,7 @@ class TaskController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function store(StoreTaskRequest $request)
     {
 
         $user = $request->user();
@@ -34,11 +36,7 @@ class TaskController extends Controller
             return response()->json(['error' => 'Usuário não autenticado'], 401);
         }
 
-        $validatedData = $request->validate([
-            'title' => 'required|string',
-            'description' => 'nullable|string',
-            'status' => 'in:pending,in_progress,done',
-        ]);
+        $validatedData = $request->validated();
 
         $task = $this->taskService->createTask($validatedData,$user->id);
 
@@ -47,19 +45,14 @@ class TaskController extends Controller
             'task' => $task,
         ], 201);
     }
-
-    public function update(Request $request, int $id)
+    public function update(UpdateTaskRequest $request, int $id)
     {
         $user = $request->user();
 
         if (!$user) {
             return response()->json(['error' => 'Usuário não autenticado'], 401);
         }
-        $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'status' => 'in:pending,in_progress,done',
-        ]);
+        $validatedData = $request->validated();
 
         try {
             $task = $this->taskService->updateTask($id, $validatedData, $user->id);

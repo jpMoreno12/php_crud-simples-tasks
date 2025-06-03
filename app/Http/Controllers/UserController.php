@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequests\CreateUserRequest;
+use App\Http\Requests\UserRequests\UpdateUserRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -15,13 +17,9 @@ class UserController extends Controller
     public function teste() {
         return 'stesds';
     }
-    public function createUser(Request $request)  {
-        $arrayValidatedData = $request->validate([
-            'name' => 'string|required|max:255',
-            'email' => 'string|required|email|unique:users,email',
-            'password' => 'string|required|min:6'
-        ]);
-
+    public function createUser(CreateUserRequest $request)  {
+        $arrayValidatedData = $request->validated();
+        dump($arrayValidatedData);
         $user = User::create([
             'name' => $arrayValidatedData['name'],
             'email' => $arrayValidatedData['email'],
@@ -49,18 +47,14 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-    public function updateUser(Request $request, int $id) {
+    public function updateUser(UpdateUserRequest $request, int $id) {
         $user = User::find($id);
 
         if(!$user) {
             return response()->json(['error' => 'user not found']); 
         }
 
-        $arrayValidatedData = $request->validate([
-            'name' => 'string|required',
-            'email' => 'string|required',
-            'password' => 'string|required',
-        ]);
+        $arrayValidatedData = $request->validated();
         
         $user->update($arrayValidatedData);
 
