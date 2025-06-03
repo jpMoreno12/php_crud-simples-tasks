@@ -25,11 +25,11 @@ Route::middleware('auth:api')->group(function () {
 
 Route::middleware('auth:api')->group(function () {
     Route::post('/users', [UserController::class, 'updateUser']);
+    Route::get('/users', [UserController::class, 'getUser']);
     Route::put('/users/{id}', [UserController::class, 'deleteUser']);
 });
 
 Route::get('/getAllUsers', [UserController::class, 'getAllUsers']);
-Route::get('/getUser{id}', [UserController::class, 'getUser']);
 Route::post('/createUser', [UserController::class, 'createUser']);     
 
 // Route::put('/updateUser', [UserController::class, 'updateUser']);  
