@@ -47,6 +47,7 @@ class TaskService
     public function deleteTasks(int $id, int $authUserId)
     {
         $task = $this->taskRepository->getTask($id);
+        
         if ($task->user_id !== $authUserId) {
             throw new \Exception('user not found');
             dd('usuario nao encontrado');
