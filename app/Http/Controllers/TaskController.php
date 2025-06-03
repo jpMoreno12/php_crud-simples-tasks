@@ -51,6 +51,7 @@ class TaskController extends Controller
         if (!$user) {
             return response()->json(['error' => 'Usuário não autenticado'], 401);
         }
+
         $validatedData = $request->validated();
 
         try {
@@ -61,12 +62,10 @@ class TaskController extends Controller
         }
     }
 
-    public function destroy(int $id)
+    public function destroy(Request $request, int $id)
     {
-        $authUserId = 1;
-
-        $response = $this->taskService->deleteTask($id, $authUserId);
-
+        $user = $request->user();
+        $response = $this->taskService->deleteTask($id, $user->id);
         return response()->json($response);
     }
 }
