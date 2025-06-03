@@ -14,12 +14,9 @@ use function Pest\Laravel\json;
 class UserController extends Controller
 {
 
-    public function teste() {
-        return 'stesds';
-    }
     public function createUser(CreateUserRequest $request)  {
         $arrayValidatedData = $request->validated();
-        dump($arrayValidatedData);
+
         $user = User::create([
             'name' => $arrayValidatedData['name'],
             'email' => $arrayValidatedData['email'],
