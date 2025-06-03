@@ -29,11 +29,11 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request)
     {
         $user = $request->user();
-        
+
         if (!$user) {
             return response()->json(['error' => 'Usuário não autenticado'], 401);
         }
-        
+
         $validatedData = $request->validated();
         $task = $this->taskService->createTask($validatedData, $user->id);
 
@@ -65,7 +65,7 @@ class TaskController extends Controller
     public function destroy(Request $request, int $id)
     {
         $user = $request->user();
-        $response = $this->taskService->deleteTask($id, $user->id);
+        $response = $this->taskService->deleteTasks($id, $user->id);
         return response()->json($response);
     }
 }
