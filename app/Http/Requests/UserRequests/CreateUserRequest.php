@@ -22,7 +22,6 @@ class CreateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
             'name' => 'string|required|max:255',
             'email' => 'string|required|email|unique:users,email',
             'password' => 'string|required|min:6'

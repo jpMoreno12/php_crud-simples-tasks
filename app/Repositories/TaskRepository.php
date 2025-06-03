@@ -13,21 +13,24 @@ class TaskRepository implements ITask {
     public function createTask(array $task) {
         return $this->task->create($task);
     }
+
     public function getAllTasks(int $user_id){
         return $this->task->where('user_id', $user_id)->get();
     }
+
     public function getTask(int $id){
         return $this->task->find($id);
     }
+
     public function updateTask(int $id, array $data){ 
         $task = $this->task->find($id);
-
         if($task) {
             $task->update($data);
             return $task;
         }
         return false;
     }
+
     public function deleteTask(int $id){
         $task = $this->task->find($id);
 

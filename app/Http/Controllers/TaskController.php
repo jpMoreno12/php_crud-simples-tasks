@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TaskRequests\StoreTaskRequest;
-use App\Repositories\Contracts\ITask;
 use Illuminate\Http\Request;
 use App\Services\TaskService;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\TaskRequests\UpdateTaskRequest;
 
 
@@ -30,22 +28,22 @@ class TaskController extends Controller
 
     public function store(StoreTaskRequest $request)
     {
-
         $user = $request->user();
-
+        
         if (!$user) {
             return response()->json(['error' => 'Usuário não autenticado'], 401);
         }
-
+        
         $validatedData = $request->validated();
-
-        $task = $this->taskService->createTask($validatedData,$user->id);
+        $task = $this->taskService->createTask($validatedData, $user->id);
 
         return response()->json([
             'message' => 'Task was created',
             'task' => $task,
         ], 201);
     }
+
+
     public function update(UpdateTaskRequest $request, int $id)
     {
         $user = $request->user();
