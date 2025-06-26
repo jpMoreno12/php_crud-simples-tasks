@@ -48,8 +48,11 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-    public function updateUser(UpdateUserRequest $request, int $id) {
-        $user = User::find($id);
+    public function updateUser(UpdateUserRequest $request) {
+        
+        $userId = $request->user()->id;
+        dd($userId);
+        $user = User::find($userId);
 
         if(!$user) {
             return response()->json(['error' => 'user not found']); 
@@ -65,8 +68,10 @@ class UserController extends Controller
         ]);
     }
 
-    public function deleteUser(Request $request, int $id) {
-        $user = User::find($id);
+    public function deleteUser(Request $request) {
+
+        $userId = $request->user()->id;
+        $user = User::find($userId);
 
         if(!$user) {
             return response()->json(['error' => 'user not found']); 
